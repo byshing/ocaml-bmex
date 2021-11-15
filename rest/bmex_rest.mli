@@ -89,13 +89,6 @@ module Order : sig
     unit ->
     (Cohttp.Response.t * Yojson.Safe.json list) Deferred.Or_error.t
 
-  val submit_bulk :
-    ?buf:Bi_outbuf.t -> ?log:Log.t ->
-    testnet:bool ->
-    key:string ->
-    secret:string ->
-    t list ->
-    (Cohttp.Response.t * Yojson.Safe.json) Deferred.Or_error.t
 
   type amend = {
     orderID : Uuid.t option ;
@@ -120,12 +113,6 @@ module Order : sig
     ?text:string ->
     ?orderID:Uuid.t ->
     unit -> amend
-
-  val amend_bulk :
-    ?buf:Bi_outbuf.t -> ?log:Log.t ->
-    testnet:bool -> key:string -> secret:string ->
-    amend list ->
-    (Cohttp.Response.t * Yojson.Safe.json) Deferred.Or_error.t
 
   val cancel :
     ?buf:Bi_outbuf.t -> ?log:Log.t ->

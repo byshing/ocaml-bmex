@@ -298,12 +298,6 @@ module Order = struct
       | #Yojson.Safe.json -> invalid_arg "Order.get_open_orders"
     end
 
-  let submit_bulk ?buf ?log ~testnet ~key ~secret orders =
-    let credentials = key, secret in
-    let orders = List.map orders ~f:(Encoding.construct encoding) in
-    let body = `Assoc ["orders", `List orders] in
-    call ?buf ?log ~testnet ~credentials ~body ~verb:Post "/api/v1/order/bulk"
-
   type amend = {
     orderID : Uuid.t option ;
     origClOrdID : string option ;
@@ -343,12 +337,6 @@ module Order = struct
          (opt "stopPx" float)
          (opt "pegOffsetValue" float)
          (opt "text" string))
-
-  let amend_bulk ?buf ?log ~testnet ~key ~secret orders =
-    let credentials = key, secret in
-    let orders = List.map orders ~f:(Encoding.construct amend_encoding) in
-    let body = `Assoc ["orders", `List orders] in
-    call ?buf ?log ~testnet ~credentials ~body ~verb:Put "/api/v1/order/bulk"
 
   let cancel ?buf ?log ~testnet ~key ~secret ?(orderIDs=[]) ?(clOrdIDs=[]) ?text () =
     let credentials = key, secret in
